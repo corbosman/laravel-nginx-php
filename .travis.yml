@@ -22,7 +22,7 @@ script:
         (
           set -Eeuo pipefail
           set -x
-          PHP_VERSION_MINOR=`docker run corbosman/laravel-nginx-php:${PHP_VERSION} php -v | grep ^PHP | cut -d' ' -f2`
+          PHP_VERSION_MINOR=`docker run laravel-nginx-php:${PHP_VERSION} php -v | grep ^PHP | cut -d' ' -f2`
           docker build -t laravel-nginx-php:${PHP_VERSION_MINOR} --build-arg PHP_VERSION=${PHP_VERSION_MINOR} --pull --cache-from corbosman/laravel-nginx-php:${PHP_VERSION} .
           if [ ${TRAVIS_BRANCH} == 'master' ]; then
             docker login -u ${HUB_USERNAME} -p ${HUB_PASSWORD}
