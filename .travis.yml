@@ -32,7 +32,7 @@ script:
             docker push corbosman/laravel-nginx-php:${PHP_VERSION_MINOR}
             if [ ${PHP_VERSION} == "7.4" ]; then
               docker tag laravel-nginx-php:${PHP_VERSION} corbosman/laravel-nginx-php:7;
-              docker tag laravel-nginx-php:${PHP_VERSION} corbsman/laravel-nginx-php:latest;
+              docker tag laravel-nginx-php:${PHP_VERSION} corbosman/laravel-nginx-php:latest;
               docker push corbosman/laravel-nginx-php:7;
               docker push corbosman/laravel-nginx-php:latest;
             fi
