@@ -1,0 +1,40 @@
+language: bash
+services: docker
+
+env:
+    - PHP_VERSION=7.1
+    - PHP_VERSION=7.2
+    - PHP_VERSION=7.3
+    - PHP_VERSION=7.4
+
+before_script:
+    - env | sort
+
+script:
+    - docker pull corbosman/laravel-nginx-php:${PHP_VERSION} || true
+    - |
+        (
+          set -Eeuo pipefail
+          set -x
+          docker build -t laravel-nginx-php:${PHP_VERSION} --build-arg PHP_VERSION=${PHP_VERSION} --pull --cache-from corbosman/laravel-nginx-php:${PHP_VERSION} .
+        )
+    - |
+        (
+          set -Eeuo pipefail
+          set -x
+          PHP_VERSION_MINOR=`docker run corbosman/laravel-nginx-php:${PHP_VERSION} php -v | grep ^PHP | cut -d' ' -f2`
+          docker build -t laravel-nginx-php:${PHP_VERSION_MINOR} --build-arg PHP_VERSION=${PHP_VERSION_MINOR} --pull --cache-from corbosman/laravel-nginx-php:${PHP_VERSION} .
+          if [ ${TRAVIS_BRANCH} == 'master' ]; then
+            docker login -u ${HUB_USERNAME} -p ${HUB_PASSWORD}
+            docker tag laravel-nginx-php:${PHP_VERSION} corbosman/laravel-nginx-php:${PHP_VERSION}
+            docker push corbosman/laravel-nginx-php:${PHP_VERSION}
+            docker tag laravel-nginx-php:${PHP_VERSION_MINOR} corbosman/laravel-nginx-php:${PHP_VERSION_MINOR}
+            docker push corbosman/laravel-nginx-php:${PHP_VERSION_MINOR}
+            if [ ${PHP_VERSION} == "7.4" ]; then
+              docker tag laravel-nginx-php:${PHP_VERSION} corbosman/laravel-nginx-php:7;
+              docker tag laravel-nginx-php:${PHP_VERSION} corbsman/laravel-nginx-php:latest;
+              docker push corbosman/laravel-nginx-php:7;
+              docker push corbosman/laravel-nginx-php:latest;
+            fi
+          fi
+        )
