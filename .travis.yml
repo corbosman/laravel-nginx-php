@@ -25,7 +25,7 @@ script:
           PHP_VERSION_MINOR=`docker run laravel-nginx-php:${PHP_VERSION} php -v | grep ^PHP | cut -d' ' -f2`
           docker build -t laravel-nginx-php:${PHP_VERSION_MINOR} --build-arg PHP_VERSION=${PHP_VERSION_MINOR} --pull --cache-from corbosman/laravel-nginx-php:${PHP_VERSION} .
           if [ ${TRAVIS_BRANCH} == 'master' ]; then
-            docker login -u ${HUB_USERNAME} -p ${HUB_PASSWORD}
+            docker login -u corbosman -p ${HUB_PASSWORD}
             docker tag laravel-nginx-php:${PHP_VERSION} corbosman/laravel-nginx-php:${PHP_VERSION}
             docker push corbosman/laravel-nginx-php:${PHP_VERSION}
             docker tag laravel-nginx-php:${PHP_VERSION_MINOR} corbosman/laravel-nginx-php:${PHP_VERSION_MINOR}
