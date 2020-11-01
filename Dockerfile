@@ -7,7 +7,7 @@ COPY services/horizon.sh /etc/services.d/horizon/run
 
 # scheduler
 COPY services/cron.sh /etc/services.d/cron/run
-COPY services/crontab /etc/cron.d/laravel-scheduler
+COPY services/crontab /etc/cron.d/www-data
 
 # migrations
 COPY services/migrations.sh /etc/cont-init.d/migrations
