@@ -6,7 +6,8 @@ FROM corbosman/nginx-php:${PHP_VERSION}
 COPY services/horizon.sh /etc/services.d/horizon/run
 
 # scheduler
-COPY services/crontab /etc/cron.d/www-data
+COPY services/cron.sh /etc/services.d/cron/run
+COPY services/crontab /etc/cron.d/laravel-scheduler
 
 # migrations
 COPY services/migrations.sh /etc/cont-init.d/migrations
