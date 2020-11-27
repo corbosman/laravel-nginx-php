@@ -6,7 +6,7 @@ env:
     - PHP_VERSION=7.2
     - PHP_VERSION=7.3
     - PHP_VERSION=7.4
-    - PHP_VERSION=8.0-rc
+    - PHP_VERSION=8.0
 
 before_script:
     - env | sort
@@ -37,7 +37,7 @@ script:
               docker push corbosman/laravel-nginx-php:7;
               docker push corbosman/laravel-nginx-php:latest;
             fi
-            if [ ${PHP_VERSION} == "8.0-rc" ]; then
+            if [ ${PHP_VERSION} == "8.0" ]; then
               docker tag laravel-nginx-php:${PHP_VERSION} corbosman/laravel-nginx-php:8;
               docker push corbosman/laravel-nginx-php:8;
             fi
