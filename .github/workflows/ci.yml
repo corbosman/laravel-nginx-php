@@ -1,0 +1,54 @@
+name: Publish Docker Images
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 7 * * *"
+
+jobs:
+  push-to-docker-hub:
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    strategy:
+      matrix:
+        php: ['7.1', '7.2', '7.3', '7.4']
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Pull Cache Image
+        run: docker pull corbosman/laravel-nginx-php:${{matrix.php}} || true
+
+      - name: Build Laravel PHP${{matrix.php}} Image
+        run: docker build -t laravel-nginx-php:${{matrix.php}} --build-arg PHP_VERSION=${{matrix.php}} --pull --cache-from corbosman/laravel-nginx-php:${{matrix.php}} .
+
+      - name: Build Minor Version For Laravel PHP${{matrix.php}}
+        run: |
+          PHP_VERSION_MINOR=`docker run laravel-nginx-php:${{matrix.php}} php -v | grep ^PHP | cut -d' ' -f2`
+          echo Building version ${PHP_VERSION_MINOR}
+          docker build -t laravel-nginx-php:${PHP_VERSION_MINOR} --build-arg PHP_VERSION=${PHP_VERSION_MINOR} --pull --cache-from corbosman/laravel-nginx-php:${{matrix.php}} .
+          echo "PHP_VERSION_MINOR=${PHP_VERSION_MINOR}" >> $GITHUB_ENV
+
+      - name: Push Images
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo ${{ secrets.DOCKER_HUB_PASSWORD }} | docker login -u corbosman --password-stdin
+          docker tag laravel-nginx-php:${{matrix.php}} corbosman/laravel-nginx-php:${{matrix.php}}
+          docker push corbosman/laravel-nginx-php:${{matrix.php}}
+          docker tag laravel-nginx-php:${PHP_VERSION_MINOR} corbosman/laravel-nginx-php:${PHP_VERSION_MINOR}
+          docker push corbosman/laravel-nginx-php:${PHP_VERSION_MINOR}
+
+      - name: Push 7 Image
+        if: github.ref == 'refs/heads/master' && matrix.php == '7.4'
+        run: |
+          docker tag laravel-nginx-php:${{matrix.php}} corbosman/laravel-nginx-php:7
+          docker tag laravel-nginx-php:${{matrix.php}} corbosman/laravel-nginx-php:latest
+          docker push corbosman/laravel-nginx-php:7
+          docker push corbosman/laravel-nginx-php:latest
