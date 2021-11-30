@@ -8,7 +8,9 @@ This is a docker image that builds on [corbosman/nginx-php](https://hub.docker.c
 
 This image can be run with different versions of PHP. Pick one of the versions below. Since these images are built automatically every day, it will always be the latest minor release within a version.
 
-* <code>[8.0](https://github.com/corbosman/laravel-nginx-php/blob/master/Dockerfile)</code>, <code>[8](https://github.com/corbosman/laravel-nginx-php/blob/master/Dockerfile)</code>, <code>[latest](https://github.com/corbosman/laravel-nginx-php/blob/master/Dockerfile)</code>
+* <code>[8.1](https://github.com/corbosman/laravel-nginx-php/blob/master/Dockerfile)</code>, <code>[8](https://github.com/corbosman/laravel-nginx-php/blob/master/Dockerfile)</code>, <code>[latest](https://github.com/corbosman/laravel-nginx-php/blob/master/Dockerfile)</code>
+
+* <code>[8.0](https://github.com/corbosman/laravel-nginx-php/blob/master/Dockerfile)</code>
 
 * <code>[7.4](https://github.com/corbosman/laravel-nginx-php/blob/master/Dockerfile)</code>, <code>[7](https://github.com/corbosman/laravel-nginx-php/blob/master/Dockerfile)</code>
 

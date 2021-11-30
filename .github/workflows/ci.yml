@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        php: ['7.1', '7.2', '7.3', '7.4', '8.0']
+        php: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
 
     steps:
       - name: Check out the repository
@@ -53,7 +53,7 @@ jobs:
           docker push corbosman/laravel-nginx-php:7
 
       - name: Push 8 Image
-        if: github.ref == 'refs/heads/master' && matrix.php == '8.0'
+        if: github.ref == 'refs/heads/master' && matrix.php == '8.1'
         run: |
           docker tag laravel-nginx-php:${{matrix.php}} corbosman/laravel-nginx-php:8
           docker tag laravel-nginx-php:${{matrix.php}} corbosman/laravel-nginx-php:latest
