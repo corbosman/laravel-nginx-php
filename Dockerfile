@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-ARG PHP_VERSION=7.4
+ARG PHP_VERSION=8.2
 FROM corbosman/nginx-php:${PHP_VERSION}
 
 # horizon
